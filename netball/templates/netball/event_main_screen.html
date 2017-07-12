@@ -1,0 +1,173 @@
+{%extends "index.html"%}
+{% load table_tags %}
+{% load staticfiles %}
+
+{% block content%}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
+	<link rel="icon" type="image/png" href="../assets/img/favicon.png" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+    <!--  Material Dashboard CSS    -->
+    <link href="{% static 'assets/css/material-dashboard.css'%} " rel="stylesheet"/>
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet" />
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+
+    <style>
+        #listpage_body
+        {
+        align :  center;
+        margin-left : 100px;
+        margin-right : -420px;
+        margin-top : 100px;
+        }
+    </style>
+
+    <script>
+     $( document ).ready(function() {
+            console.log( "ready!" );
+
+
+           <!--var tdElem1 = document.getElementById ( "event_team1" );-->
+           <!--var tdText1 = tdElem1.innerText ;-->
+           <!--alert("qwerty-&#45;&#45;"+tdText1);-->
+
+           <!--var tdElem2 = document.getElementById ( "event_team2" );-->
+           <!--var tdText2 = tdElem2.innerText ;-->
+           <!--alert("qwerty-&#45;&#45;"+tdText2);-->
+
+
+
+                $("#btn_team1").click( function()
+                   {
+                            alert('button clicked');
+
+                            var tbl = document.getElementById("event_tbl");
+                            var numRows = tbl.rows.length;
+                            <!--alert("no of rows--"+numRows);-->
+                            for (var i = 1; i < numRows; i++) {
+                                var ID = tbl.rows[i].id;
+
+                                var cells = tbl.rows[i].getElementsByTagName('td');
+                                alert("in team1="+cells[2].innerHTML);
+                                <!--alert("in team 2="+cells[3].innerHTML);-->
+                                <!--var t = cells[2].innerHTML;-->
+                                <!--alert("t"+t);-->
+                                var team1 = cells[2].innerHTML;
+
+                            }
+                            $.ajax({
+                                        type : "GET",
+                                        url : '/netball/is_played_list/',
+                                        data:{'team1' : team1}
+                                        })
+                                        .done(function(data) {
+                                            console.log(data.length);
+                                            alert("hello");
+                                     });
+
+
+
+
+                        });
+
+     });
+
+
+
+
+    </script>
+
+</head>
+<body>
+
+
+    <div class="wrapper" id="listpage_body" align="center">
+        	<div class="col-lg-8 col-md-12">
+							<div class="card">
+	                            <div class="card-header" data-background-color="orange">
+	                                <h4 class="title" align="center">Events</h4>
+                                     <!--<a href="{% url 'netball:create_pool' %}" class="btn btn-primary"style="margin-top:-40px;float:right;margin-right: 18px;">New</a>-->
+	                            </div>
+	                            <div class="card-content table-responsive">
+                                    <table class="table table-hover" id="event_tbl">
+	                                    <thead >
+	                                        <th>Event</th>
+	                                    	<th>Venue</th>
+                                            <th>Team1</th>
+                                            <th>Team2</th>
+                                            <th>Define Team</th>
+	                                    </thead>
+	                                    <tbody>
+                                            {% for Events in object_list %}
+                                                <tr>
+                                                <td id="event_name">{{ Events.event_name }}</td>
+                                                <td id="event_venue">{{ Events.venue }}</td>
+                                                <td class="event_team1" id={{ Events.team1.pk }}>{{ Events.team1 }}</td>
+                                                <td id="event_team2">{{ Events.team2 }}</td>
+                                                <td>
+                                                <a href="{% url 'netball:is_played_list' Events.team1 %}" class="btn btn-primary" id ="btn_team1">Team1</a>
+                                                <a href="{% url 'netball:is_played_list' Events.team2 %}" class="btn btn-primary"style=""id ="btn_team2">Team2</a>
+                                                <a href="{% url 'netball:running_score' Events.events_id%}" class="btn btn-primary" id="btn_score">Score</a>
+                                                </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+
+
+                                </div>
+
+
+                                    {% if is_paginated %}
+                                      <ul class="pagination pagination-primary">
+                                        {% if page_obj.has_previous %}
+                                          <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                                        {% else %}
+                                          <li class="disabled"><span>&laquo;</span></li>
+                                        {% endif %}
+                                        {% for i in paginator.page_range %}
+                                          {% if page_obj.number == i %}
+                                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                          {% else %}
+                                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                          {% endif %}
+                                        {% endfor %}
+                                        {% if page_obj.has_next %}
+                                          <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                                        {% else %}
+                                          <li class="disabled"><span>&raquo;</span></li>
+                                        {% endif %}
+                                      </ul>
+                                    {% endif %}
+
+                            </div>
+                            </div>
+            </div>
+    </div>
+
+
+
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,45 @@
+{%extends "index.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        $( document ).ready(function() {
+                function activateTab(selector) {
+            $(selector).on('click.twbstab',function() { $(this).tab('show'); })
+                .closest('.disabled').removeClass('disabled');
+        }
+
+        activateTab('#myTab a:first');
+
+        $('.btn-demo').on('click',function() {
+            var selector = '#myTab a[href="'+$(this).data('activate')+'"]';
+            activateTab(selector);
+        });
+        });
+
+    </script>
+    <style>
+            .nav-tabs li.disabled { color: grey; }
+    .nav-tabs li.disabled a:hover { border-color: transparent; }
+
+    </style>
+</head>
+<body>
+
+    <ul class="nav nav-tabs" id="myTab">
+    <li class="disabled active"><a href="#home">Home</a></li>
+    <li class="disabled"><a href="#profile">Profile</a></li>
+    <li class="disabled"><a href="#messages">Messages</a></li>
+    <li class="disabled"><a href="#settings">Settings</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="home"><button class="btn-demo btn" data-activate="#profile">Activate next tab</button></div>
+    <div class="tab-pane" id="profile"><button class="btn-demo btn" data-activate="#messages">Activate next tab</button></div>
+    <div class="tab-pane" id="messages"><button class="btn-demo btn" data-activate="#settings">Activate next tab</button></div>
+    <div class="tab-pane" id="settings">Good work pal!</div>
+</div>
+</body>
+</html>

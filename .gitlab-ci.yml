@@ -1,0 +1,7 @@
+stages:
+  - test
+  
+test:
+  stage: test
+  script: 
+    - ansible-playbook -i hosts -u root provision.yml

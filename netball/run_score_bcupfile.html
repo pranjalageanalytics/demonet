@@ -1,0 +1,623 @@
+{%extends "index.html"%}
+{% load table_tags %}
+{% load staticfiles %}
+
+{% block content%}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Scores</title>
+
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
+	<link rel="icon" type="image/png" href="../assets/img/favicon.png" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+    <!--  Material Dashboard CSS    -->
+    <link href="{% static 'assets/css/material-dashboard.css'%} " rel="stylesheet"/>
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet" />
+
+    <!--     Fonts and icons     -->
+    <!--<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">-->
+    <!--<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>-->
+
+    <!--&lt;!&ndash;<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">&ndash;&gt;-->
+    <!--&lt;!&ndash;<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>&ndash;&gt;-->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <style>
+        #listpage_body
+        {
+        align :  center;
+        margin-left : 100px;
+        margin-right : -320px;
+        margin-top : 100px;
+        }
+    </style>
+    <script>
+        $( document ).ready(function() {
+            console.log( "in !" );
+
+            <!--Code for enebale Disable tabs Starts-->
+                $(".btn_prev").hide();
+                <!--$("#tab1default").hide();-->
+                $("#tab2default").hide();
+
+                 $("#tab1").click(function(e){
+                    alert("clicked tab1");
+                    $("#btn_prev").hide();
+                    $("#tab1default").show();
+                    $("#tab2default").hide();
+                 });
+
+
+                $("#tab2").click(function(e){
+		        alert("clicked tab2");
+		        $("#btn_prev").show();
+		        $("#tab2default").show();
+                    $("#tab1default").hide();
+		        });
+
+		        $("#tab3").click(function(e){
+		        alert("clicked tab2");
+		        $("#btn_prev").show();
+		        });
+
+		        $("#tab4").click(function(e){
+		        alert("clicked tab2");
+		        $("#btn_prev").show();
+		        });
+
+		        $("#tab5").click(function(e){
+		        alert("clicked tab2");
+		        $("#btn_prev").show();
+		        });
+
+		        $("#tab6").click(function(e){
+		        alert("clicked tab2");
+		        $("#btn_prev").show();
+		        });
+
+
+            <!--Code for enebale Disable tabs Ends-->
+
+            var event= $("#event_hidden").val();
+            var teamx= $("#team1_hidden").val();
+            var teamy= $("#team2_hidden").val();
+            <!--var quarter= $("#nav-tabs").val();-->
+            <!--alert("quarter -&#45;&#45;"+quarter);-->
+
+
+            <!--team  add_penalty starts-->
+            $(".add_penalty_team").click( function()
+                   {
+                   var1= $(this).attr('id');
+                   alert(var1);
+                   if (var1 == "add_penalty_team1"){
+                      team1= teamx;
+                      var status ='add_penalty';
+                   }
+                   if (var1 == "add_penalty_team2"){
+                      team1= teamy;
+                      var status ='add_penalty';
+
+                   }
+                   if (var1 == "remove_penalty_team1"){
+                      team1= teamx;
+                      var status ='remove_penalty';
+                   }
+                   if (var1 == "remove_penalty_team2"){
+                      team1= teamy;
+                      var status ='remove_penalty';
+                   }
+                   if (var1 == "add_center_pass_team1"){
+                      team1= teamx;
+                      var status ='add_center_pass';
+                   }
+                   if (var1 == "remove_center_pass_team1"){
+                      team1= teamx;
+                      var status ='remove_center_pass';
+                   }
+                   if (var1 == "add_center_pass_team2"){
+                      team1= teamy;
+                      var status ='add_center_pass';
+                   }
+                   if (var1 == "remove_center_pass_team2"){
+                      team1= teamy;
+                      var status ='remove_center_pass';
+                   }
+
+                         alert(team1+" "+status);
+
+                            alert('button clicked');
+                            var count = 0;
+                            <!--alert("count=")-->
+
+                            $.ajax({
+                                        type : "GET",
+                                        url : '/netball/penalty_n_pass_score/',
+                                        data:{'events_id' : event,'team1':team1,'status':status}
+                                        })
+                                        .done(function(data) {
+                                            console.log(data.length);
+                                            alert("hello");
+                                     });
+
+            });
+            <!--ends-->
+
+            <!--Players add_goals starts-->
+            $(".add_goal_team1").click( function()
+                   {
+                   var player1 = $(this).parent().parent().find("input[type='hidden']").val();
+                   var1= $(this).attr('id');
+                   var plyr= $(this).attr('class');
+                   alert(var1);
+                   alert(player1);
+                   if (var1 == "add_goal_team1"){
+                      team1= teamx;
+                      player11 = player1;
+                      var status ='add_goal';
+                   }
+                   if (var1 == "add_goal_team2"){
+                      team1= teamy;
+                      player11 = player2;
+                      var status ='add_goal';
+
+                   }
+                   if (var1 == "remove_goal_team1"){
+                      team1= teamx;
+                      player11 = player1;
+                      var status ='remove_goal';
+                   }
+                   if (var1 == "remove_goal_team2"){
+                      team1= teamy;
+                      player11 = player2;
+                      var status ='remove_goal';
+                   }
+                   if (var1 == "add_attempt_team1"){
+                      team1= teamx;
+                      player11 = player1;
+                      var status ='add_attempt';
+                   }
+                   if (var1 == "remove_attempt_team1"){
+                      team1= teamx;
+                      player11 = player1;
+                      var status ='remove_attempt';
+                   }
+                   if (var1 == "add_attempt_team2"){
+                      team1= teamy;
+                      player11 = player2;
+                      var status ='add_attempt';
+                   }
+                   if (var1 == "remove_attempt_team2"){
+                      team1= teamy;
+                      player11 = player2;
+                      var status ='remove_attempt';
+                   }
+
+                         alert(team1+" "+status+"  "+player11);
+
+                            alert('button clicked');
+                            var count = 0;
+                            <!--alert("count=")-->
+
+                            $.ajax({
+                                        type : "GET",
+                                        url : '/netball/goal_n_attempt_score/',
+                                        data:{'events_id' : event,'team1':team1,'status':status,'player11':player1}
+                                        })
+                                        .done(function(data) {
+                                            console.log(data.length);
+                                            alert("hello");
+                                     });
+
+            function myFunction() {
+                $.ajax({
+                        type : "GET",
+                        url : '/netball/get_value_of_goal_n_attempt_score/',
+                        data:{'events_id' : event,'team1':team1,'status':status,'player11':player1}
+                        })
+                        .done(function(data) {
+                            console.log(data.length);
+                            alert("hello");
+                     });
+            }
+
+
+
+            });
+            <!--ends-->
+
+
+
+
+        });
+    </script>
+
+
+</head>
+<body>
+
+<form method="post">{% csrf_token %}
+    <div class="wrapper" id="listpage_body" align="center">
+        	<div class="col-lg-9 col-md-12">
+							<div class="card">
+	                            <div class="card-header" data-background-color="orange">
+	                                <h4 class="title" align="center">Running Score Sheet</h4>
+
+
+
+
+                                </div>
+	                            <div class="card-content ">
+                                    <fieldset>
+                                        <div class="panel-heading" align="left" >
+                                            <ul class="nav nav-tabs">
+                                                <li id="tab1"><a href="#tab1default" data-toggle="tab">
+                                                    <i class="material-icons" style="width:30px;">schedule</i>
+                                                Quarter 1</a></li>
+                                                <li id="tab2" class="tab"><a href="#tab2default" data-toggle="tab">
+                                                    <i class="material-icons" style="width:30px;">schedule</i>
+                                                Quarter 2</a>
+                                                </a></li>
+                                                <li id="tab3" class="tab"><a href="#tab2default" data-toggle="tab">
+                                                    <i class="material-icons" style="width:30px;">schedule</i>
+                                                Quarter 3</a>
+                                                </a></li>
+                                                <li id="tab4" class="tab"><a href="#tab1default" data-toggle="tab">
+                                                    <i class="material-icons" style="width:30px;">schedule</i>
+                                                Quarter 4</a>
+                                                </a></li>
+                                                <li id="tab5" class="tab"><a href="#tab2default" data-toggle="tab">
+                                                    <i class="material-icons" style="width:30px;">schedule</i>
+                                                Extra Time1</a>
+                                                </a></li>
+                                                <li id="tab6" class="tab"><a href="#tab1default" data-toggle="tab">
+                                                    <i class="material-icons" style="width:30px;">schedule</i>
+                                                Extra Time2</a>
+                                                </a></li>
+                                            </ul>
+                                        </div>
+
+                                        <!--############  Tab1 tab1default  ##############-->
+
+                                                <div class="tab-pane fade in active" id="tab1default">
+                                                    <form method="post" action="#"> {% csrf_token %}
+                                                       <div class="row">
+                                                          <div class="col-md-2">
+                                                            <div class="form-group" id="event_div" style="font-size:16px; color:black;">Event:
+                                                                {{running_score_obj.event}}
+                                                                <input type="hidden" id="event_hidden" value={{running_score_obj.event}} >
+                                                            </div>
+                                                          </div>
+                                                       </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="col-md-8">
+                                                                     <div class="form-group" style="font-size:14px; color:black;">Team 1:
+                                                                       {{team1_obj}}<input type="hidden" id="team1_hidden" value={{team1_obj}}>
+                                                                         <a  href="#">
+                                                                              <i class="fa fa-plus-square add_penalty_team"  id="add_penalty_team1" ></i>
+                                                                         </a>
+                                                                         <strong>P</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_penalty_team" id="remove_penalty_team1"></i>
+                                                                         </a>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_penalty_team" id="add_center_pass_team1"></i>
+                                                                         </a>
+                                                                         <strong>C</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_penalty_team" id="remove_center_pass_team1"></i>
+                                                                         </a>
+                                                                            <!--<button class="btn btn-primary btn-just-icon">-->
+                                                                             <!--<i class="material-icons" align="center">Penalty</i>-->
+                                                                            <!--</button>-->
+                                                                     </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="col-md-6">
+                                                                     <div class="form-group" style="font-size:14px; color:black;">Team 2:
+                                                                       {{team2_obj}}<input type="hidden" id="team2_hidden" value={{team2_obj}}>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_penalty_team"  id="add_penalty_team2"></i>
+                                                                         </a>
+                                                                         <strong>P</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_penalty_team" id="remove_penalty_team2"></i>
+                                                                         </a>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_penalty_team" id="add_center_pass_team2" ></i>
+                                                                         </a>
+                                                                         <strong>C</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_penalty_team" id="remove_center_pass_team2"></i>
+                                                                         </a>
+                                                                     </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="row" style="margin-left:10px;margin-right:10px;">
+
+                                                                <div class="col-md-6 panel panel-default"  >
+                                                                    <div class="col-md-8" >
+
+                                                                        {% for p1 in player_obj1%}
+                                                                         <div class="form-group"><input type="checkbox" name="optionsCheckboxes">
+                                                                             <input class="player" type="hidden" id="player1_hidden" value={{p1}}>
+                                                                           {{p1.first_name}}({{p1.position}}):<strong style=""></strong>&nbsp;&nbsp;
+                                                                             <a href="#">
+
+                                                                              <i class="fa fa-plus-square add_goal_team1 {{p1}}" id="add_goal_team1" ></i>
+                                                                         </a>
+                                                                         <strong>G</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_goal_team1" id="remove_goal_team1" ></i>
+                                                                         </a>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_goal_team1" id="add_attempt_team1" ></i>
+                                                                         </a>
+                                                                         <strong>A</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_goal_team1" id="remove_attempt_team1" ></i>
+                                                                         </a>
+                                                                         </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 panel panel-default">
+                                                                    <div class="col-md-8">{% for p2 in player_obj2 %}
+                                                                         <div class="form-group"><input type="checkbox" name="optionsCheckboxes">
+                                                                           {{p2.first_name}} <strong style="color:black;">({{p2.position}}):<input class="player" type="hidden" id="player2_hidden" value={{p2.pk}}></strong>&nbsp;&nbsp;
+                                                                            <a href="#">
+                                                                              <i class="fa fa-plus-square add_goal_team1" id="add_goal_team2"></i>
+                                                                         </a>
+                                                                         <strong>G</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_goal_team1" id="remove_goal_team2"></i>
+                                                                         </a>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_goal_team1" id="add_attempt_team2"></i>
+                                                                         </a>
+                                                                         <strong>A</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_goal_team1" id="remove_attempt_team2"></i>
+                                                                         </a>
+                                                                         </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+
+                                                        </div>
+
+                                                        <div class="row" >
+                                                             <div class="col-md-4">
+                                                                 <div class="form-group"></div>
+                                                                     <div class="form-group" style="font-size:14px; color:black;">Total No of Goals : </div>
+                                                                     <div class="form-group" style="margin-top:8px; font-size:14px; color:black;">Total No of Attempts :</div>
+
+                                                                </div>
+                                                            <div class="col-md-1">
+                                                                     <div class="form-group">{{team1_obj}}</div>
+                                                                    <div class="form-group" style="margin-top:8px;border:1px solid black;">{{team1_total_goals}}</div>
+                                                                    <div class="form-group" style="margin-top:8px;border:1px solid black;">{{team1_total_attempts}}</div>
+                                                                </div>
+                                                                &nbsp;
+                                                                <div class="col-md-1">
+                                                                     <div class="form-group">{{team2_obj}}</div>
+                                                                     <div class="form-group" style="margin-top:8px;border:1px solid black;">{{team2_total_goals}}</div>
+                                                                     <div class="form-group" style="margin-top:8px;border:1px solid black;">{{team2_total_attempts}}</div>
+
+                                                                </div>
+
+
+
+                                                        </div>
+
+                                                         <div class="row">
+                                                             <div class="col-md-4" align="right">
+                                                                 <div class="">
+                                                                     <a href="#" type="hidden" class="btn btn-success btn_prev" id="btn_prev" style="margin-left:700px;margin-bottom:-55px;">Prev</a>
+                                                                  <button type="submit" id="btn" class="btn btn-success" style="margin-left:800px;">Submit</button>
+                                                                       <!--<button type="submit" id="btn_prev" class="btn btn-success" >Prev</button>-->
+                                                                 </div>
+                                                            </div>
+                                                         </div>
+                                                    </form>
+                                                </div>
+
+
+                                        <!--###############################-->
+
+                                        <!--############  Tab2 tab1default  ##############-->
+
+                                                <div class="tab-pane fade in active" id="tab2default">
+                                                    <form method="post" action="#"> {% csrf_token %}
+                                                       <div class="row">
+                                                          <div class="col-md-2">
+                                                            <div class="form-group" id="event_div" style="font-size:16px; color:black;">Event:
+                                                                {{running_score_obj.event}}
+                                                                <input type="hidden" id="event_hidden" value={{running_score_obj.event}} >
+                                                            </div>
+                                                          </div>
+                                                       </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="col-md-8">
+                                                                     <div class="form-group" style="font-size:14px; color:black;">Team 1:
+                                                                       {{team1_obj}}<input type="hidden" id="team1_hidden" value={{team1_obj}}>
+                                                                         <a  href="#">
+                                                                              <i class="fa fa-plus-square add_penalty_team"  id="add_penalty_team1" ></i>
+                                                                         </a>
+                                                                         <strong>P</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_penalty_team" id="remove_penalty_team1"></i>
+                                                                         </a>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_penalty_team" id="add_center_pass_team1"></i>
+                                                                         </a>
+                                                                         <strong>C</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_penalty_team" id="remove_center_pass_team1"></i>
+                                                                         </a>
+                                                                            <!--<button class="btn btn-primary btn-just-icon">-->
+                                                                             <!--<i class="material-icons" align="center">Penalty</i>-->
+                                                                            <!--</button>-->
+                                                                     </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="col-md-6">
+                                                                     <div class="form-group" style="font-size:14px; color:black;">Team 2:
+                                                                       {{team2_obj}}<input type="hidden" id="team2_hidden" value={{team2_obj}}>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_penalty_team"  id="add_penalty_team2"></i>
+                                                                         </a>
+                                                                         <strong>P</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_penalty_team" id="remove_penalty_team2"></i>
+                                                                         </a>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_penalty_team" id="add_center_pass_team2" ></i>
+                                                                         </a>
+                                                                         <strong>C</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_penalty_team" id="remove_center_pass_team2"></i>
+                                                                         </a>
+                                                                     </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="row" style="margin-left:10px;margin-right:10px;">
+
+                                                                <div class="col-md-6 panel panel-default"  >
+                                                                    <div class="col-md-8" >
+
+                                                                        {% for p1 in player_obj1%}
+                                                                         <div class="form-group"><input type="checkbox" name="optionsCheckboxes">
+                                                                             <input class="player" type="hidden" id="player1_hidden" value={{p1}}>
+                                                                           {{p1.first_name}}({{p1.position}}):<strong style=""></strong>&nbsp;&nbsp;
+                                                                             <a href="#">
+
+                                                                              <i class="fa fa-plus-square add_goal_team1 {{p1}}" id="add_goal_team1" ></i>
+                                                                         </a>
+                                                                         <strong>G</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_goal_team1" id="remove_goal_team1" ></i>
+                                                                         </a>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_goal_team1" id="add_attempt_team1" ></i>
+                                                                         </a>
+                                                                         <strong>A</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_goal_team1" id="remove_attempt_team1" ></i>
+                                                                         </a>
+                                                                         </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 panel panel-default">
+                                                                    <div class="col-md-8">{% for p2 in player_obj2 %}
+                                                                         <div class="form-group"><input type="checkbox" name="optionsCheckboxes">
+                                                                           {{p2.first_name}} <strong style="color:black;">({{p2.position}}):<input class="player" type="hidden" id="player2_hidden" value={{p2.pk}}></strong>&nbsp;&nbsp;
+                                                                            <a href="#">
+                                                                              <i class="fa fa-plus-square add_goal_team1" id="add_goal_team2"></i>
+                                                                         </a>
+                                                                         <strong>G</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_goal_team1" id="remove_goal_team2"></i>
+                                                                         </a>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-plus-square add_goal_team1" id="add_attempt_team2"></i>
+                                                                         </a>
+                                                                         <strong>A</strong>
+                                                                         <a href="#">
+                                                                              <i class="fa fa-minus-square add_goal_team1" id="remove_attempt_team2"></i>
+                                                                         </a>
+                                                                         </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+
+                                                        </div>
+
+                                                        <div class="row" >
+                                                             <div class="col-md-4">
+                                                                 <div class="form-group"></div>
+                                                                     <div class="form-group" style="font-size:14px; color:black;">Total No of Goals : </div>
+                                                                     <div class="form-group" style="margin-top:8px; font-size:14px; color:black;">Total No of Attempts :</div>
+
+                                                                </div>
+                                                            <div class="col-md-1">
+                                                                     <div class="form-group">{{team1_obj}}</div>
+                                                                    <div class="form-group" style="margin-top:8px;border:1px solid black;">{{team1_total_goals}}</div>
+                                                                    <div class="form-group" style="margin-top:8px;border:1px solid black;">{{team1_total_attempts}}</div>
+                                                                </div>
+                                                                &nbsp;
+                                                                <div class="col-md-1">
+                                                                     <div class="form-group">{{team2_obj}}</div>
+                                                                     <div class="form-group" style="margin-top:8px;border:1px solid black;">{{team2_total_goals}}</div>
+                                                                     <div class="form-group" style="margin-top:8px;border:1px solid black;">{{team2_total_attempts}}</div>
+
+                                                                </div>
+
+
+
+                                                        </div>
+
+                                                         <!--<div class="row">-->
+                                                             <!--<div class="col-md-4" align="right">-->
+                                                                 <!--<div class="">-->
+                                                                     <!--<a href="#" type="hidden" class="btn btn-success btn_prev" id="btn_prev" style="margin-left:700px;margin-bottom:-55px;">Prev</a>-->
+                                                                  <!--<button type="submit" id="btn" class="btn btn-success" style="margin-left:800px;">Submit</button>-->
+                                                                       <!--&lt;!&ndash;<button type="submit" id="btn_prev" class="btn btn-success" >Prev</button>&ndash;&gt;-->
+                                                                 <!--</div>-->
+                                                            <!--</div>-->
+                                                         <!--</div>-->
+                                                    </form>
+                                                </div>
+
+
+                                        <!--###############################-->
+
+
+
+
+                                    </fieldset>
+                                </div>
+
+
+                            </div>
+
+            </div>
+    </div>
+</form>
+
+
+</body>
+</html>
+{% endblock %}

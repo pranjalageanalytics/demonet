@@ -1,0 +1,116 @@
+{%extends "index.html"%}
+{% load table_tags %}
+{% load staticfiles %}
+
+{% block content%}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
+	<link rel="icon" type="image/png" href="../assets/img/favicon.png" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+    <!--  Material Dashboard CSS    -->
+    <link href="{% static 'assets/css/material-dashboard.css'%} " rel="stylesheet"/>
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet" />
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+
+    <style>
+        #listpage_body
+        {
+        align :  center;
+        margin-left : 100px;
+        margin-right : -420px;
+        margin-top : 100px;
+        }
+    </style>
+
+
+</head>
+<body>
+
+
+    <div class="wrapper" id="listpage_body" align="center">
+        	<div class="col-lg-6 col-md-12">
+							<div class="card">
+	                            <div class="card-header" data-background-color="orange">
+	                                <h4 class="title" align="center">Tech Staff</h4>
+                                    <a href="{% url 'netball:create_tech' %}" class="btn btn-primary"style="margin-top:-40px;float:right;margin-right: 18px;">New</a>
+	                            </div>
+	                            <div class="card-content table-responsive">
+                                    <table class="table table-hover">
+	                                    <thead>
+	                                        <th>ID</th>
+	                                    	<th>First Name</th>
+                                            <th>Last Name</th>
+                                        <th>Position</th>
+                                        <th></th>
+	                                    </thead>
+	                                    <tbody>
+                                            {% for TechStaff in object_list %}
+                                                <tr>
+                                                <td><a href="{% url 'netball:edit_tech' TechStaff.tech_staff_id %}"data-toggle="tooltip" data-placement="top" title="Edit">{{ TechStaff.tech_staff_id }}</a></td>
+                                                <td><a href="{% url 'netball:edit_tech' TechStaff.tech_staff_id %}"data-toggle="tooltip" data-placement="top" title="Edit">{{ TechStaff.first_name }}</a> </td>
+                                                <td><a href="{% url 'netball:edit_tech' TechStaff.tech_staff_id %}"data-toggle="tooltip" data-placement="top" title="Edit">{{ TechStaff.last_name }}</a> </td>
+                                                <td><a href="{% url 'netball:edit_tech' TechStaff.tech_staff_id %}"data-toggle="tooltip" data-placement="top" title="Edit">{{ TechStaff.position }}</a> </td>
+
+                                                <td><a href="{% url 'netball:delete_tech' TechStaff.tech_staff_id %}">delete</a></td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+
+
+                                </div>
+
+
+                                    {% if is_paginated %}
+                                      <ul class="pagination pagination-primary">
+                                        {% if page_obj.has_previous %}
+                                          <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                                        {% else %}
+                                          <li class="disabled"><span>&laquo;</span></li>
+                                        {% endif %}
+                                        {% for i in paginator.page_range %}
+                                          {% if page_obj.number == i %}
+                                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                          {% else %}
+                                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                          {% endif %}
+                                        {% endfor %}
+                                        {% if page_obj.has_next %}
+                                          <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                                        {% else %}
+                                          <li class="disabled"><span>&raquo;</span></li>
+                                        {% endif %}
+                                      </ul>
+                                    {% endif %}
+
+                            </div>
+                            </div>
+            </div>
+    </div>
+
+
+
+
+</body>
+</html>
+{% endblock %}
